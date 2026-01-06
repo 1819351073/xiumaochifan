@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>河南完整餐别情绪吃什么</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #fef6e4;
+      color: #3a2e2b;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    section {
+      background: #f3e9d8;
+      border: 4px solid #d9a273;
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    select, button {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 12px;
+      border: none;
+      background: #d9a273;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 0.75rem;
+    }
+    button:hover {
+      background: #c08a60;
+    }
+    input[type=range] {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    #mealCard {
+      display: none;
+      margin-top: 1rem;
+    }
+    #history {
+      margin-top: 1rem;
+    }
+    .record {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: rgba(0,0,0,.05);
+      border-left: 4px solid #d9a273;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>河南完整餐别情绪吃什么</h1>
+
+  <!-- 地址 -->
+  <section>
+    <h2>地址（固定：河南新乡获嘉县）</h2>
+    <label for="street">手写街道（如亢村镇）</label>
+    <input id="street" placeholder="亢村镇" />
+  </section>
+
+  <!-- 节气 -->
+  <section>
+    <h2>二十四节气</h2>
+    <select id="solarTerm">
+      <option>大寒</option>
+      <option>立春</option>
+      <option>雨水</option>
+      <option>惊蛰</option>
+      <option>春分</option>
+      <option>清明</option>
+      <option>谷雨</option>
+      <option>立夏</option>
+      <option>小满</option>
+      <option>芒种</option>
+      <option>夏至</option>
+      <option>小暑</option>
+      <option>大暑</option>
+      <option>立秋</option>
+      <option>处暑</option>
+      <option>白露</option>
+      <option>秋分</option>
+      <option>寒露</option>
+      <option>霜降</option>
+      <option>立冬</option>
+      <option>小雪</option>
+      <option>大雪</option>
+      <option>冬至</option>
+      <option>小寒</option>
+    </select>
+  </section>
+
+  <!-- 情绪 -->
+  <section>
+    <h2>情绪探测</h2>
+    <label>情绪正负（消极 ← → 积极）</label>
+    <input type="range" id="valence" min="-100" max="100" value="0">
+    <label>能量高低（低 ← → 高）</label>
+    <input type="range" id="arousal" min="-100" max="100" value="0">
+    <label>紧张程度（放松 ← → 紧张）</label>
+    <input type="range" id="tension" min="-100" max="100" value="0">
+    <button id="calcEmo">计算我的情绪</button>
+    <div id="emoRes" style="margin-top:0.5rem;font-weight:600;display:none"></div>
+  </section>
+
+  <!-- MBTI & 餐别 -->
+  <section>
+    <h2>MBTI & 餐别</h2>
+    <label for="mbti">MBTI 类型</label>
+    <select id="mbti">
+      <option value="">-- 请选择 --</option>
+      <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+      <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+      <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+      <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+    </select>
+
+    <label for="emotion">当前情绪（可手动改）</label>
+    <select id="emotion">
+      <option value="">-- 请选择 --</option>
+      <option value="anxious">焦虑</option>
+      <option value="sad">悲伤</option>
+      <option value="angry">愤怒</option>
+      <option value="bored">无聊</option>
+      <option value="excited">兴奋</option>
+      <option value="tired">疲惫</option>
+      <option value="calm">平静</option>
+    </select>
+
+    <label>餐别</label>
+    <div style="display:flex;gap:1rem;">
+      <button class="mealBtn" data-meal="breakfast">早餐</button>
+      <button class="mealBtn" data-meal="lunch">午餐</button>
+      <button class="mealBtn" data-meal="tea">下午茶</button>
+      <button class="mealBtn" data-meal="dinner">晚餐</button>
+    </div>
+
+    <button id="eatBtn">一键吃什么</button>
+    <div id="mealCard">
+      <h3 id="mealTitle"></h3>
+      <ul id="mealList"></ul>
+    </div>
+  </section>
+
+  <!-- 历史 -->
+  <section id="hist">
+    <h2>历史记录</h2>
+    <div id="history"></div>
+  </section>
+
+  <script>
+    /* ===== 完整四餐数据 ===== */
+    const mealData = {
+      breakfast: {
+        anxious: ["燕麦香蕉牛奶", "全麦吐司+花生酱", "蒸蛋羹+小馄饨"],
+        sad: ["豆沙包+热豆浆", "红枣小米粥", "芝士蛋三明治"],
+        angry: ["冰美式+牛角包", "酸辣汤粉", "川味凉面"],
+        bored: ["手抓饼+鸡蛋", "酸奶+坚果", "饭团"],
+        excited: ["草莓松饼", "牛油果能量碗", "爆浆芝士蛋"],
+        tired: ["红糖馒头+蜂蜜水", "白粥+咸菜", "即食麦片"],
+        calm: ["水煮蛋+牛奶", "玉米+豆浆", "蒸南瓜"]
+      },
+      lunch: {
+        anxious: ["番茄龙利鱼便当", "鸡丝凉面", "虾仁炒蛋+米饭"],
+        sad: ["红烧牛腩饭", "番茄鸡蛋面", "芝士焗饭"],
+        angry: ["麻辣香锅（微辣）", "酸辣肥牛", "辣子鸡丁"],
+        bored: ["卤肉饭", "宫保鸡丁", "咖喱鸡饭"],
+        excited: ["炙烤鳗鱼饭", "芝士焗鸡排", "爆浆汉堡"],
+        tired: ["蒸蛋+白粥", "青菜肉丝面", "山药排骨汤"],
+        calm: ["清蒸鲈鱼+米饭", "西葫芦炒蛋", "荞麦凉面"]
+      },
+      tea: {
+        anxious: ["低糖酸奶+坚果", "水果茶", "黑巧克力"],
+        sad: ["红豆奶茶", "芝士蛋糕", "抹茶泡芙"],
+        angry: ["冰美式", "辣条", "酸辣无骨鸡爪"],
+        bored: ["原味奶茶", "蛋挞", "薯片"],
+        excited: ["草莓奶昔", "彩虹蛋糕", "气泡水"],
+        tired: ["热牛奶", "蜂蜜小蛋糕", "香蕉"],
+        calm: ["柠檬水", "苏打饼干", "白桃乌龙"]
+      },
+      dinner: {
+        anxious: ["清蒸鸡胸肉+糙米", "番茄蛋花汤", "凉拌豆腐"],
+        sad: ["红烧排骨+米饭", "紫菜蛋花汤", "土豆泥"],
+        angry: ["麻辣香锅（中辣）", "酸辣土豆丝", "辣子鸡"],
+        bored: ["蛋炒饭", "宫保鸡丁", "咖喱土豆"],
+        excited: ["芝士焗大虾", "炙烤牛排", "海鲜披萨"],
+        tired: ["白粥+蒸蛋", "青菜豆腐汤", "山药排骨汤"],
+        calm: ["清蒸鳕鱼+糙米", "丝瓜蛋汤", "凉拌黄瓜"]
+      }
+    };
+
+    let currentMeal = "";
+
+    /* 餐别按钮 */
+    document.querySelectorAll(".mealBtn").forEach(btn => {
+      btn.addEventListener("click", e => {
+        document.querySelectorAll(".mealBtn").forEach(b => b.style.background = "");
+        btn.style.background = "#c08a60";
+        currentMeal = btn.dataset.meal;
+      });
+    });
+
+    function emotionCN(key) {
+      const map = { anxious: "焦虑", sad: "悲伤", angry: "愤怒", bored: "无聊", excited: "兴奋", tired: "疲惫", calm: "平静" };
+      return map[key] || key;
+    }
+
+    function mealCN(key) {
+      const map = { breakfast: "早餐", lunch: "午餐", tea: "下午茶", dinner: "晚餐" };
+      return map[key] || key;
+    }
+
+    /* 情绪计算 */
+    function calcEmotion() {
+      const v = +document.getElementById("valence").value;
+      const a = +document.getElementById("arousal").value;
+      const t = +document.getElementById("tension").value;
+      let emo;
+      if (Math.abs(v) < 30 && Math.abs(a) < 30) emo = "calm";
+      else if (v > 30 && a > 30) emo = "excited";
+      else if (v > 30 && a < -30) emo = "tired";
+      else if (v < -30 && a > 30) emo = t > 30 ? "angry" : "anxious";
+      else if (v < -30 && a < -30) emo = "sad";
+      else emo = Math.abs(t) > 30 ? "anxious" : "bored";
+      return emo;
+    }
+
+    document.getElementById("calcEmo").onclick = () => {
+      const emo = calcEmotion();
+      document.getElementById("emotion").value = emo;
+      document.getElementById("emoRes").innerHTML = `→ 你最接近的情绪是：<b>${emotionCN(emo)}</b>`;
+      document.getElementById("emoRes").style.display = "block";
+    };
+
+    /* 吃什么 */
+    document.getElementById("eatBtn").onclick = () => {
+      const emotion = document.getElementById("emotion").value;
+      if (!emotion) return alert("请先完成情绪识别");
+      const mbti = document.getElementById("mbti").value;
+      if (!mbti) return alert("请先选 MBTI");
+      if (!currentMeal) return alert("请先选餐别");
+      const street = document.getElementById("street").value || "获嘉县";
+      const term = document.getElementById("solarTerm").value;
+      const list = mealData[currentMeal][emotion];
+      document.getElementById("mealTitle").textContent = `河南省新乡市获嘉县${street} · ${mealCN(currentMeal)} · ${emotionCN(emotion)} · ${term}`;
+      document.getElementById("mealList").innerHTML = list.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("mealCard").style.display = "block";
+      saveMeal(currentMeal, emotion, list, street, term);
+    };
+
+    function saveMeal(meal, emotion, list, street, term) {
+      const db = localStorage;
+      const data = JSON.parse(db.getItem("emoHistoryHenan") || "[]");
+      data.unshift({
+        t: new Date().toLocaleString("zh-CN"),
+        mbti: document.getElementById("mbti").value,
+        emotion,
+        meal: { meal, dishes: list, street, term }
+      });
+      db.setItem("emoHistoryHenan", JSON.stringify(data.slice(0, 50)));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const box = document.getElementById("history");
+      const list = JSON.parse(localStorage.getItem("emoHistoryHenan") || "[]");
+      box.innerHTML = list.map(r => `
+        <div class="record">
+          <b>${r.mbti} · ${emotionCN(r.emotion)}</b> · ${mealCN(r.meal.meal)}<br>
+          <small>获嘉县${r.meal.street} · ${r.meal.term} · ${r.t}</small>
+        </div>`).join("");
+    }
+
+    /* 初始化 */
+    renderHistory();
+  </script>
+</body>
+</html>
